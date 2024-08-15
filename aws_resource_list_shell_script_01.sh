@@ -3,7 +3,7 @@
 #######################################################################
 
 # Agenda  : Shell Script is used to list all resources in the AWS Account
-# Author  : Devilvires/Devops Team
+# Author  : Deepankar19/Devops Team
 # Version : v0.0.1
 #
 # Following are the supported Aws services by the script
