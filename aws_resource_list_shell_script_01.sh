@@ -29,9 +29,10 @@
 ############################################################################
 
 # check if the required number of argument is passed
-if [$# -ne 2 ]: then
-echo "Execute : $0 <region> <service_name>"
-exit 1
+if [ $# -ne 2 ]; then
+    echo "Usage: ./aws_resource_list.sh  <aws_region> <aws_service>"
+    echo "Example: ./aws_resource_list.sh us-east-1 ec2"
+    exit 1
 fi
 
 # Assign the argument to variables and convert the service to lowercase
@@ -39,22 +40,30 @@ aws_region=$1
 aws_service=$(echo "$2" | tr '[:upper:]' '[:lower:]')
 
 # check if AWS CLI is installed or not
-if ! Command -v aws &> /dev/null; then
-  echo "AWS CLI is not installed. Please install it and try again."
-  exit 1
+if ! command -v aws &> /dev/null; then
+    echo "AWS CLI is not installed. Please install the AWS CLI and try again."
+    exit 1
 fi
 
 # check if the AWS CLI is configured
-if [ ! -d ~/.aws ]: then
-  echo "AWS CLI is not Configured. Please Configure it and try again."
-  exit 1
+if [ ! -d ~/.aws ]; then
+    echo "AWS CLI is not configured. Please configure the AWS CLI and try again."
+    exit 1
 fi
 
 # Execute the AWS CLI Command based on the service name
 case $aws_service in
   ec2)
      echo "Listing EC2 Instance in $aws_region"
-     aws ec2 describe-instance --region $aws_region
+     aws ec2 describe-instances --region $aws_region
+     ;;
+  ec2-type)
+     echo "Listing EC2 Instance Types in $aws_region, Please keep clam, this will take some time "
+     aws ec2 describe-instance-types --region $aws_region
+     ;;
+  ec2-status)  
+     echo "Listing EC2 Instance in $aws_region"
+     aws ec2 describe-instance-status --region $aws_region
      ;;
   rds)
      echo "Listing RDS Instance in $aws_region"
